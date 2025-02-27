@@ -1,9 +1,11 @@
 import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:user_repository/user_repository.dart';
 
 class FirebaseUserRepository implements UserRepository {
   final FirebaseAuth _firebaseAuth;
+  final usersCollection = FirebaseFirestore.instance.collection('users');
 
   FirebaseUserRepository({FirebaseAuth? firebaseAuth}) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
@@ -48,6 +50,29 @@ class FirebaseUserRepository implements UserRepository {
   Future<void> resetPassword(String email) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<MyUser> getMyUser(String myUserId) {
+    try {
+      return usersCollection
+          .doc(myUserId)
+          .get()
+          .then((value) => MyUser.fromEntity(MyUserEntity.fromDocument(value.data()!)));
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> setUserData(MyUser user) async {
+    try {
+      await usersCollection.doc(user.id).set(user.toEntity().toDocument());
     } catch (e) {
       log(e.toString());
       rethrow;
