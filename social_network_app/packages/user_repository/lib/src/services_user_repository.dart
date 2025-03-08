@@ -1,13 +1,17 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:user_repository/user_repository.dart';
 
-class FirebaseUserRepository implements UserRepository {
+class ServicesUserRepository implements UserRepository {
   final FirebaseAuth _firebaseAuth;
   final usersCollection = FirebaseFirestore.instance.collection('users');
 
-  FirebaseUserRepository({FirebaseAuth? firebaseAuth}) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  final CloudinaryPublic cloudinary = CloudinaryPublic('dqhyfwygx', 'image-upload', cache: false);
+
+  ServicesUserRepository({FirebaseAuth? firebaseAuth}) : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   @override
   Stream<User?> get user {
@@ -81,6 +85,29 @@ class FirebaseUserRepository implements UserRepository {
   Future<void> setUserData(MyUser user) async {
     try {
       await usersCollection.doc(user.id).set(user.toEntity().toDocument());
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> uploadPicture(String filePath, String userId) async {
+    try {
+      File imageFile = File(filePath);
+      final response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(
+          imageFile.path,
+          folder: 'users/$userId/PP',
+          publicId: '${userId}_lead',
+        ),
+      );
+
+      final imageURL = response.secureUrl;
+
+      await usersCollection.doc(userId).update({'profilePicture': imageURL});
+
+      return imageURL;
     } catch (e) {
       log(e.toString());
       rethrow;
