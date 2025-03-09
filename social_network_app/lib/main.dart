@@ -11,5 +11,5 @@ void main() async {
   await Firebase.initializeApp();
   Bloc.observer = SimpleBlocObserver();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(MainApp(FirebaseUserRepository()));
+  runApp(MainApp(ServicesUserRepository()));
 }
