@@ -22,7 +22,7 @@ class MyUserEntity extends Equatable {
     };
   }
 
-  static MyUserEntity fromDocument(Map<String, Object?> doc) {
+  static MyUserEntity fromDocument(Map<String, dynamic> doc) {
     return MyUserEntity(
       id: doc['id'] as String,
       email: doc['email'] as String,
