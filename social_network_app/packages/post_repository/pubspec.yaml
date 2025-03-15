@@ -9,8 +9,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+    
+  uuid: ^4.5.1
 
   # Firebase
+  cloud_firestore: ^5.6.5
+
+  # Cloudinary
+  cloudinary_public: ^0.23.1
+
+  # Custom Repository
+  user_repository:
+    path: ../user_repository
 
 
 dev_dependencies:
