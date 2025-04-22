@@ -23,5 +23,9 @@ class MyUserBloc extends Bloc<MyUserEvent, MyUserState> {
         emit(const MyUserState.failure());
       }
     });
+
+    on<ResetMyUser>((event, emit) {
+      emit(const MyUserState.loading());
+    });
   }
 }
