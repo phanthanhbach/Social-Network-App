@@ -18,5 +18,9 @@ class SignInRequired extends SignInEvent {
 }
 
 class SignOutRequired extends SignInEvent {
-  const SignOutRequired();
+  final BuildContext context;
+
+  const SignOutRequired({
+    required this.context,
+  });
 }

@@ -2,7 +2,12 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:social_network_app/blocs/authentication_bloc/authentication_bloc.dart';
+import 'package:social_network_app/blocs/bottom_navigation_bloc/bottom_navigation_bloc.dart';
+import 'package:social_network_app/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 part 'sign_in_event.dart';
@@ -28,6 +33,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       }
     });
     on<SignOutRequired>((event, emit) async {
+      BlocProvider.of<MyUserBloc>(event.context).add(const ResetMyUser());
+      BlocProvider.of<BottomNavigationBloc>(event.context).add(const BottomNavigationChanged(0));
       await _userRepository.signOut();
     });
   }
