@@ -9,6 +9,8 @@ abstract class UpdateUserInfoState extends Equatable {
 
 class UpdateUserInfoInitial extends UpdateUserInfoState {}
 
+// Change Profile Picture
+
 class UploadPictureLoading extends UpdateUserInfoState {}
 
 class UploadPictureSuccess extends UpdateUserInfoState {
@@ -21,3 +23,18 @@ class UploadPictureSuccess extends UpdateUserInfoState {
 }
 
 class UploadPictureFailure extends UpdateUserInfoState {}
+
+// Change User Name
+
+class UpdateUserNameLoading extends UpdateUserInfoState {}
+
+class UpdateUserNameSuccess extends UpdateUserInfoState {
+  final String name;
+
+  const UpdateUserNameSuccess(this.name);
+
+  @override
+  List<Object> get props => [name];
+}
+
+class UpdateUserNameFailure extends UpdateUserInfoState {}
