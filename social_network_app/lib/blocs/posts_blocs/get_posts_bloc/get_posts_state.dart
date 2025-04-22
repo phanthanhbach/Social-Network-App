@@ -12,7 +12,7 @@ final class GetPostsInitial extends GetPostsState {}
 final class GetPostsLoading extends GetPostsState {}
 
 final class GetPostsSuccess extends GetPostsState {
-  final List<Post> posts;
+  final List<PostWithUser> posts;
 
   const GetPostsSuccess(this.posts);
 

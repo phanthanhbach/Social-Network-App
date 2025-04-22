@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:post_repository/post_repository.dart';
 import 'package:social_network_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:social_network_app/blocs/bottom_navigation_bloc/bottom_navigation_bloc.dart';
-import 'package:social_network_app/blocs/get_posts_bloc/get_posts_bloc.dart';
+import 'package:social_network_app/blocs/posts_blocs/get_posts_bloc/get_posts_bloc.dart';
 import 'package:social_network_app/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:social_network_app/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:social_network_app/blocs/update_user_info_bloc/update_user_info_bloc.dart';
