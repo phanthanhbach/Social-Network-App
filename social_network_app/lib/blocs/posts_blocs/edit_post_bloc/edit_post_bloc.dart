@@ -15,9 +15,7 @@ class EditPostBloc extends Bloc<EditPostEvent, EditPostState> {
       emit(EditPostLoading());
       try {
         Post post = await _postRepository.editPost(
-          event.postId,
-          event.userId,
-          event.newContent,
+          event.post,
           event.imageUrl,
         );
         emit(EditPostSuccess(post));

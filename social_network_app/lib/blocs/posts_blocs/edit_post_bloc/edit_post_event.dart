@@ -8,18 +8,14 @@ abstract class EditPostEvent extends Equatable {
 }
 
 class EditPostRequested extends EditPostEvent {
-  final String postId;
-  final String userId;
-  final String newContent;
+  final Post post;
   final String imageUrl;
 
   const EditPostRequested({
-    required this.postId,
-    required this.userId,
-    required this.newContent,
+    required this.post,
     required this.imageUrl,
   });
 
   @override
-  List<Object> get props => [postId, userId, newContent, imageUrl];
+  List<Object> get props => [post, imageUrl];
 }
