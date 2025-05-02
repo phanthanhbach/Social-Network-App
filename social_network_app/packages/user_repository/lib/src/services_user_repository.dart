@@ -22,6 +22,18 @@ class ServicesUserRepository implements UserRepository {
   }
 
   @override
+  Stream<List<MyUser>> getUsersStream() {
+    return usersCollection.snapshots().map(
+        (snapshot) => snapshot.docs.map((doc) => MyUser.fromEntity(MyUserEntity.fromDocument(doc.data()))).toList());
+  }
+
+  Future<List<MyUser>> getUsersByIds(List<String> userIds) async {
+    final usersSnapshot = await usersCollection.where(FieldPath.documentId, whereIn: userIds).get();
+
+    return usersSnapshot.docs.map((doc) => MyUser.fromEntity(MyUserEntity.fromDocument(doc.data()))).toList();
+  }
+
+  @override
   Future<MyUser> signUp(MyUser myUser, String password) async {
     try {
       UserCredential user = await _firebaseAuth.createUserWithEmailAndPassword(
@@ -108,6 +120,17 @@ class ServicesUserRepository implements UserRepository {
       await usersCollection.doc(userId).update({'profilePicture': imageURL});
 
       return imageURL;
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> updateUserName(String userId, String name) async {
+    try {
+      await usersCollection.doc(userId).update({'name': name});
+      return name;
     } catch (e) {
       log(e.toString());
       rethrow;
