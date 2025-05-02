@@ -4,36 +4,36 @@ import '../entities/entities.dart';
 
 class Post {
   String postId;
-  String post;
+  String userId;
+  String content;
   String? imageUrl;
   DateTime createdAt;
-  MyUser myUser;
 
   Post({
     required this.postId,
-    required this.post,
+    required this.userId,
+    required this.content,
     this.imageUrl,
     required this.createdAt,
-    required this.myUser,
   });
 
   // Empty user which represents an unauthenticated user
-  static final empty = Post(postId: '', post: '', imageUrl: '', createdAt: DateTime.now(), myUser: MyUser.empty);
+  static final empty = Post(postId: '', userId: '', content: '', imageUrl: '', createdAt: DateTime.now());
 
   // CopyWith method to update the user object
   Post copyWith({
     String? postId,
-    String? post,
+    String? userId,
+    String? content,
     String? imageUrl,
     DateTime? createdAt,
-    MyUser? myUser,
   }) {
     return Post(
       postId: postId ?? this.postId,
-      post: post ?? this.post,
+      userId: userId ?? this.userId,
+      content: content ?? this.content,
       imageUrl: imageUrl ?? this.imageUrl,
       createdAt: createdAt ?? this.createdAt,
-      myUser: myUser ?? this.myUser,
     );
   }
 
@@ -43,29 +43,36 @@ class Post {
   bool get isNotEmpty => this != Post.empty;
 
   PostEntity toEntity() {
-    return PostEntity(postId: postId, post: post, imageUrl: imageUrl, createdAt: createdAt, myUser: myUser);
+    return PostEntity(
+      postId: postId,
+      userId: userId,
+      content: content,
+      imageUrl: imageUrl,
+      createdAt: createdAt,
+    );
   }
 
   static Post fromEntity(PostEntity entity) {
     return Post(
-        postId: entity.postId,
-        post: entity.post,
-        imageUrl: entity.imageUrl,
-        createdAt: entity.createdAt,
-        myUser: entity.myUser);
+      postId: entity.postId,
+      userId: entity.userId,
+      content: entity.content,
+      imageUrl: entity.imageUrl,
+      createdAt: entity.createdAt,
+    );
   }
 
   @override
-  List<Object?> get props => [postId, post, imageUrl, createdAt, myUser];
+  List<Object?> get props => [postId, userId, content, imageUrl, createdAt];
 
   @override
   String toString() {
     return '''PostEntity { 
       postId: $postId, 
-      post: $post,
+      userId: $userId,
+      content: $content,
       imageUrl: $imageUrl,
       createdAt: $createdAt, 
-      myUser: $myUser 
     }''';
   }
 }

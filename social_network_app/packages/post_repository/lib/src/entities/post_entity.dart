@@ -3,50 +3,50 @@ import 'package:user_repository/user_repository.dart';
 
 class PostEntity {
   String postId;
-  String post;
+  String userId;
+  String content;
   String? imageUrl;
   DateTime createdAt;
-  MyUser myUser;
 
   PostEntity({
     required this.postId,
-    required this.post,
+    required this.userId,
+    required this.content,
     this.imageUrl,
     required this.createdAt,
-    required this.myUser,
   });
 
   Map<String, Object?> toDocument() {
     return {
       'postId': postId,
-      'post': post,
+      'userId': userId,
+      'content': content,
       'imageUrl': imageUrl,
       'createdAt': createdAt,
-      'myUser': myUser.toEntity().toDocument(),
     };
   }
 
   static PostEntity fromDocument(Map<String, dynamic> doc) {
     return PostEntity(
       postId: doc['postId'] as String,
-      post: doc['post'] as String,
+      userId: doc['userId'] as String,
+      content: doc['content'] as String,
       imageUrl: doc['imageUrl'] as String?,
       createdAt: (doc['createdAt'] as Timestamp).toDate(),
-      myUser: MyUser.fromEntity(MyUserEntity.fromDocument(doc['myUser'])),
     );
   }
 
   @override
-  List<Object?> get props => [postId, post, imageUrl, createdAt, myUser];
+  List<Object?> get props => [postId, userId, content, imageUrl, createdAt];
 
   @override
   String toString() {
     return '''PostEntity { 
       postId: $postId, 
-      post: $post,
+      userId: $userId,
+      content: $content,
       imageUrl: $imageUrl,
       createdAt: $createdAt,
-      myUser: $myUser 
     }''';
   }
 }
