@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:post_repository/post_repository.dart';
-import 'package:social_network_app/blocs/create_post_bloc/create_post_bloc.dart';
+import 'package:social_network_app/blocs/posts_blocs/create_post_bloc/create_post_bloc.dart';
+import 'package:social_network_app/blocs/posts_blocs/get_posts_bloc/get_posts_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
-import '../../components/home/post_text_field.dart';
+import '../../widgets/home/post_text_field.dart';
 
 class PostScreen extends StatefulWidget {
   final MyUser myUser;
@@ -20,14 +21,14 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   late Post post;
-  late File? _selectedImage;
+  File? _selectedImage = File('');
 
   final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     post = Post.empty;
-    post.myUser = widget.myUser;
+    post.userId = widget.myUser.id;
     super.initState();
   }
 
@@ -48,6 +49,7 @@ class _PostScreenState extends State<PostScreen> {
       listener: (context, state) {
         if (state is CreatePostSuccess) {
           Navigator.of(context).pop();
+          context.read<GetPostsBloc>().add(GetPosts());
         }
       },
       child: GestureDetector(
@@ -59,7 +61,7 @@ class _PostScreenState extends State<PostScreen> {
               log(post.toString());
               if (_controller.text.length != 0) {
                 setState(() {
-                  post.post = _controller.text;
+                  post.content = _controller.text;
                 });
                 context.read<CreatePostBloc>().add(CreatePost(post, _selectedImage?.path));
               }
@@ -86,11 +88,23 @@ class _PostScreenState extends State<PostScreen> {
                     controller: _controller,
                   ),
                   const SizedBox(height: 10),
-                  ElevatedButton.icon(
-                    onPressed: _pickImage,
-                    label: Text('Add Image'),
-                    icon: Icon(CupertinoIcons.photo),
-                  ),
+                  _selectedImage?.path != ""
+                      ? Container(
+                          width: double.infinity,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(_selectedImage!),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        )
+                      : ElevatedButton.icon(
+                          onPressed: _pickImage,
+                          label: Text('Add Image'),
+                          icon: Icon(CupertinoIcons.photo),
+                        ),
                 ],
               ),
             ),
