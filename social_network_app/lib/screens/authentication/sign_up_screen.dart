@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_repository/user_repository.dart';
 
 import '../../blocs/sign_up_bloc/sign_up_bloc.dart';
-import '../../components/strings.dart';
-import '../../components/text_field.dart';
+import '../../utils/strings.dart';
+import '../../widgets/text_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

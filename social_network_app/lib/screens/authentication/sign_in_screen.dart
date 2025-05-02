@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_network_app/blocs/sign_in_bloc/sign_in_bloc.dart';
 
-import '../../components/strings.dart';
-import '../../components/text_field.dart';
+import '../../utils/strings.dart';
+import '../../widgets/text_field.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
