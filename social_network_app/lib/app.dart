@@ -39,7 +39,7 @@ class MainApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => GetPostsBloc(
-                  postRepository: FirebasePostRepository(),
+                  postRepository: ServicesPostRepository(),
                   userRepository: context.read<AuthenticationBloc>().userRepository)
                 ..add(GetPosts()),
             ),
