@@ -6,4 +6,6 @@ abstract class PostRepository {
   Future<Post> editPost(Post post, String imageUrl);
 
   Future<List<Post>> getPost();
+
+  Future<void> deletePost(Post post);
 }
