@@ -69,11 +69,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
                   post.content = _controller.text;
                 });
                 context.read<EditPostBloc>().add(EditPostRequested(
-                    // postId: post.postId,
-                    // userId: post.userId,
-                    // newContent: post.content,
-                    post: post,
-                    imageUrl: _selectedImage!.path == '' ? (post.imageUrl ?? '') : _selectedImage!.path));
+                      post: post,
+                      imageUrl: _selectedImage!.path == '' ? (post.imageUrl ?? '') : _selectedImage!.path,
+                    ));
               }
             },
             shape: RoundedRectangleBorder(
