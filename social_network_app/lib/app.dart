@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:post_repository/post_repository.dart';
 import 'package:social_network_app/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:social_network_app/blocs/bottom_navigation_bloc/bottom_navigation_bloc.dart';
+import 'package:social_network_app/blocs/posts_blocs/delete_post_bloc/delete_post_bloc.dart';
 import 'package:social_network_app/blocs/posts_blocs/get_posts_bloc/get_posts_bloc.dart';
 import 'package:social_network_app/blocs/my_user_bloc/my_user_bloc.dart';
 import 'package:social_network_app/blocs/sign_in_bloc/sign_in_bloc.dart';
@@ -42,6 +43,11 @@ class MainApp extends StatelessWidget {
                   postRepository: ServicesPostRepository(),
                   userRepository: context.read<AuthenticationBloc>().userRepository)
                 ..add(GetPosts()),
+            ),
+            BlocProvider(
+              create: (context) => DeletePostBloc(
+                postRepository: ServicesPostRepository(),
+              ),
             ),
             BlocProvider(
               create: (context) => BottomNavigationBloc()..add(const BottomNavigationChanged(0)),
