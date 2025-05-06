@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../blocs/bottom_navigation_bloc/bottom_navigation_bloc.dart';
-import 'bluetooth_demo.dart';
+import 'search_screen.dart';
 import 'home/home_screen.dart';
 import 'profile/profile_screen.dart';
 
@@ -12,7 +12,7 @@ class MainScreen extends StatefulWidget {
 
   static const List<Widget> _screens = <Widget>[
     HomeScreen(),
-    BluetoothDemo(),
+    SearchScreen(),
     ProfileScreen(),
   ];
 
