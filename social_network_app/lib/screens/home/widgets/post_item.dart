@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:post_repository/post_repository.dart';
+import 'package:social_network_app/blocs/posts_blocs/delete_post_bloc/delete_post_bloc.dart';
 import 'package:social_network_app/blocs/posts_blocs/edit_post_bloc/edit_post_bloc.dart';
 import 'package:social_network_app/blocs/posts_blocs/get_posts_bloc/get_posts_bloc.dart';
 import 'package:social_network_app/screens/home/edit_post_screen.dart';
 import 'package:social_network_app/screens/home/post_screen.dart';
 
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
   final PostWithUser postWithUser;
   final bool isCurrentUser;
 
@@ -18,8 +19,13 @@ class PostItem extends StatelessWidget {
     required this.isCurrentUser,
   });
 
+  @override
+  State<PostItem> createState() => _PostItemState();
+}
+
+class _PostItemState extends State<PostItem> {
   List<PopupMenuEntry<int>> postMenuItems(BuildContext context) {
-    if (isCurrentUser) {
+    if (widget.isCurrentUser) {
       return [
         PopupMenuItem<int>(
           value: 1,
@@ -95,7 +101,7 @@ class PostItem extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: postWithUser.user.profilePicture == ""
+                    child: widget.postWithUser.user.profilePicture == ""
                         ? Container(
                             width: 50,
                             height: 50,
@@ -114,7 +120,7 @@ class PostItem extends StatelessWidget {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: NetworkImage(postWithUser.user.profilePicture!),
+                                image: NetworkImage(widget.postWithUser.user.profilePicture!),
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -127,7 +133,7 @@ class PostItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        postWithUser.user.name,
+                        widget.postWithUser.user.name,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
@@ -138,7 +144,7 @@ class PostItem extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        DateFormat('yyyy-MM-dd').format(postWithUser.post.createdAt),
+                        DateFormat('yyyy-MM-dd').format(widget.postWithUser.post.createdAt),
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
@@ -158,7 +164,6 @@ class PostItem extends StatelessWidget {
                       position: PopupMenuPosition.under,
                       onSelected: (value) {
                         if (value == 1) {
-                          //context.read<EditPostBloc>().add(DeletePost(state.posts[index].post.id));
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
@@ -167,14 +172,35 @@ class PostItem extends StatelessWidget {
                                   postRepository: ServicesPostRepository(),
                                 ),
                                 child: EditPostScreen(
-                                  postWithUser.user,
-                                  postWithUser,
+                                  widget.postWithUser.user,
+                                  widget.postWithUser,
                                 ),
                               ),
                             ),
                           );
                         } else if (value == 2) {
-                          //context.read<CreatePostBloc>().add(EditPost(state.posts[index].post.id));
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Xác nhận xóa'),
+                              content: const Text('Bạn có chắc chắn muốn xóa bài viết này không?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: const Text('Hủy'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    context
+                                        .read<DeletePostBloc>()
+                                        .add(DeletePostRequested(post: widget.postWithUser.post));
+                                  },
+                                  child: const Text('Xóa', style: TextStyle(color: Colors.red)),
+                                ),
+                              ],
+                            ),
+                          );
                         }
                       },
                       itemBuilder: (context) => postMenuItems(context)),
@@ -182,11 +208,11 @@ class PostItem extends StatelessWidget {
               ),
               Container(
                 child: Text(
-                  postWithUser.post.content,
+                  widget.postWithUser.post.content,
                   textAlign: TextAlign.left,
                 ),
               ),
-              if (postWithUser.post.imageUrl != null && postWithUser.post.imageUrl != "")
+              if (widget.postWithUser.post.imageUrl != null && widget.postWithUser.post.imageUrl != "")
                 Padding(
                   padding: const EdgeInsets.only(top: 5),
                   child: Container(
@@ -194,7 +220,7 @@ class PostItem extends StatelessWidget {
                     height: 400,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(postWithUser.post.imageUrl!),
+                        image: NetworkImage(widget.postWithUser.post.imageUrl!),
                         fit: BoxFit.cover,
                       ),
                     ),
