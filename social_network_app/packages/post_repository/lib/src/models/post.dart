@@ -1,5 +1,3 @@
-import 'package:user_repository/user_repository.dart';
-
 import '../entities/entities.dart';
 
 class Post {
@@ -62,7 +60,6 @@ class Post {
     );
   }
 
-  @override
   List<Object?> get props => [postId, userId, content, imageUrl, createdAt];
 
   @override

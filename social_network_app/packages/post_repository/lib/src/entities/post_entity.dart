@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:user_repository/user_repository.dart';
 
 class PostEntity {
   String postId;
@@ -36,7 +35,6 @@ class PostEntity {
     );
   }
 
-  @override
   List<Object?> get props => [postId, userId, content, imageUrl, createdAt];
 
   @override
