@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:post_repository/post_repository.dart';
+import 'package:social_network_app/blocs/posts_blocs/delete_post_bloc/delete_post_bloc.dart';
 import 'package:social_network_app/screens/home/widgets/post_item.dart';
 import '../../blocs/posts_blocs/create_post_bloc/create_post_bloc.dart';
 import '../../blocs/posts_blocs/get_posts_bloc/get_posts_bloc.dart';
@@ -19,14 +20,32 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UpdateUserInfoBloc, UpdateUserInfoState>(
-      listener: (context, state) {
-        if (state is UploadPictureSuccess) {
-          setState(() {
-            context.read<MyUserBloc>().state.user!.profilePicture = state.userImage;
-          });
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<UpdateUserInfoBloc, UpdateUserInfoState>(
+          listener: (context, state) {
+            if (state is UploadPictureSuccess) {
+              setState(() {
+                context.read<MyUserBloc>().state.user!.profilePicture = state.userImage;
+              });
+            }
+          },
+        ),
+        BlocListener<DeletePostBloc, DeletePostState>(
+          listener: (context, state) {
+            if (state is DeletePostSuccess) {
+              context.read<GetPostsBloc>().add(GetPosts());
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Đã xóa bài viết thành công')),
+              );
+            } else if (state is DeletePostFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Xóa bài viết thất bại')),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         floatingActionButton: BlocBuilder<MyUserBloc, MyUserState>(
