@@ -41,11 +41,3 @@ class GetPostsBloc extends Bloc<GetPostsEvent, GetPostsState> {
     });
   }
 }
-
-// Model để chứa bài viết kèm thông tin người dùng
-class PostWithUser {
-  final Post post;
-  final MyUser user;
-
-  PostWithUser({required this.post, required this.user});
-}
